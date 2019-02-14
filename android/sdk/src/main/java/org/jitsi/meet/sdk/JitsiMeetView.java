@@ -56,7 +56,7 @@ public class JitsiMeetView
     // fine to have this field volatile without additional synchronization.
     private volatile String url;
 
-    private JitsiMeetOptions options;
+    private JitsiMeetConferenceOptions options;
 
     public JitsiMeetView(@NonNull Context context) {
         super(context);
@@ -126,18 +126,18 @@ public class JitsiMeetView
     private boolean isPictureInPictureEnabled() {
         Boolean pipOption = options.isPictureInPictureEnabled();
 
-        // FIXME move the default logic to JitsiMeetOptions ?
+        // FIXME move the default logic to JitsiMeetConferenceOptions ?
         return
             PictureInPictureModule.isPictureInPictureSupported()
                 && (pipOption == null || pipOption);
     }
 
-    public void join(JitsiMeetOptions options) {
+    public void join(JitsiMeetConferenceOptions options) {
         loadURL(options);
     }
 
     public void leave() {
-        loadURL(new JitsiMeetOptions(options).setRoom(null));
+        loadURL(new JitsiMeetConferenceOptions(options).setRoom(null));
     }
 
     /**
@@ -145,7 +145,7 @@ public class JitsiMeetView
      *
      * @param options FIXME.
      */
-    private void loadURL(@NonNull JitsiMeetOptions options) {
+    private void loadURL(@NonNull JitsiMeetConferenceOptions options) {
         this.options = Objects.requireNonNull(options, "options");
 
         Bundle props = options.toProps();

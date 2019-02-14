@@ -4,7 +4,8 @@ import android.os.*;
 
 import java.util.*;
 
-public class JitsiMeetOptions {
+public class JitsiMeetConferenceOptions
+{
     private final static String PROP_AUDIO_ONLY = "audioOnly";
 
     private final static String PROP_AUDIO_MUTED = "audioMuted";
@@ -23,15 +24,15 @@ public class JitsiMeetOptions {
 
     private final Bundle bundle;
 
-    public JitsiMeetOptions() {
+    public JitsiMeetConferenceOptions() {
         this((Bundle) null);
     }
 
-    public JitsiMeetOptions(JitsiMeetOptions defaultOptions) {
+    public JitsiMeetConferenceOptions(JitsiMeetConferenceOptions defaultOptions) {
         this(defaultOptions != null ? defaultOptions.bundle : null);
     }
 
-    private JitsiMeetOptions(Bundle defaults) {
+    private JitsiMeetConferenceOptions(Bundle defaults) {
         this.bundle = new Bundle();
 
         if (defaults != null) {
@@ -67,15 +68,15 @@ public class JitsiMeetOptions {
         return bundle.getBoolean(PROP_WELCOME_PAGE_ENABLED, false);
     }
 
-    public JitsiMeetOptions setAudioMuted(Boolean audioMuted) {
+    public JitsiMeetConferenceOptions setAudioMuted(Boolean audioMuted) {
         return setBoolean(PROP_AUDIO_MUTED, audioMuted);
     }
 
-    public JitsiMeetOptions setAudioOnly(Boolean audioOnly) {
+    public JitsiMeetConferenceOptions setAudioOnly(Boolean audioOnly) {
         return setBoolean(PROP_AUDIO_ONLY, audioOnly);
     }
 
-    protected JitsiMeetOptions setBoolean(String propertyName, Boolean value) {
+    protected JitsiMeetConferenceOptions setBoolean(String propertyName, Boolean value) {
         if (value != null) {
             bundle.putBoolean(propertyName, value);
         } else {
@@ -85,11 +86,11 @@ public class JitsiMeetOptions {
         return this;
     }
 
-    public JitsiMeetOptions setServerURL(String serverURL) {
+    public JitsiMeetConferenceOptions setServerURL(String serverURL) {
         return setString(PROP_SERVER_URL, serverURL);
     }
 
-    protected JitsiMeetOptions setString(String propertyName, String value) {
+    protected JitsiMeetConferenceOptions setString(String propertyName, String value) {
         if (value != null) {
             bundle.putString(propertyName, value);
         } else {
@@ -99,21 +100,21 @@ public class JitsiMeetOptions {
         return this;
     }
 
-    public JitsiMeetOptions setPictureInPictureEnabled(Boolean pictureInPictureEnabled) {
+    public JitsiMeetConferenceOptions setPictureInPictureEnabled(Boolean pictureInPictureEnabled) {
         return setBoolean(
                 PROP_PICTURE_IN_PICTURE_ENABLED,
                 pictureInPictureEnabled);
     }
 
-    public JitsiMeetOptions setRoom(String room) {
+    public JitsiMeetConferenceOptions setRoom(String room) {
         return setString(PROP_ROOM, room);
     }
 
-    public JitsiMeetOptions setVideoMuted(Boolean videoMuted) {
+    public JitsiMeetConferenceOptions setVideoMuted(Boolean videoMuted) {
         return setBoolean(PROP_VIDEO_MUTED, videoMuted);
     }
 
-    public JitsiMeetOptions setWelcomePageEnabled(boolean isWelcomePageEnabled) {
+    public JitsiMeetConferenceOptions setWelcomePageEnabled(boolean isWelcomePageEnabled) {
         return setBoolean(PROP_WELCOME_PAGE_ENABLED, isWelcomePageEnabled);
     }
 

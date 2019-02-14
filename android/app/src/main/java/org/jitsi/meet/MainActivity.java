@@ -30,7 +30,7 @@ import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivityInterface;
 import org.jitsi.meet.sdk.JitsiMeetActivityDelegate;
 import org.jitsi.meet.sdk.JitsiMeetFragment;
-import org.jitsi.meet.sdk.JitsiMeetOptions;
+import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.react.modules.core.PermissionListener;
@@ -56,15 +56,15 @@ public class MainActivity extends FragmentActivity implements JitsiMeetActivityI
         return (JitsiMeetFragment) getSupportFragmentManager().findFragmentById(R.id.jitsiFragment);
     }
 
-    private JitsiMeetOptions createOptions() {
-        return new JitsiMeetOptions()
+    private JitsiMeetConferenceOptions createOptions() {
+        return new JitsiMeetConferenceOptions()
                 .setWelcomePageEnabled(true)
                 .setServerURL("https://meet.jit.si");
     }
 
     private void initialize() {
         JitsiMeetFragment fragment = getFragment();
-        JitsiMeetOptions options = createOptions();
+        JitsiMeetConferenceOptions options = createOptions();
         String intentUrl = getIntentUrl(getIntent());
 
         if (intentUrl != null) {
