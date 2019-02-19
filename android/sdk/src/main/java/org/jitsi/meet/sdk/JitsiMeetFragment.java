@@ -114,16 +114,4 @@ public class JitsiMeetFragment extends Fragment {
             view.enterPictureInPicture();
         }
     }
-
-    /**
-     *
-     * @see JitsiMeetView#setColorScheme(Bundle)
-     */
-    public void setColorScheme(Bundle colorScheme) {
-        if (view == null) {
-            this.colorScheme = colorScheme;
-        } else {
-            view.setColorScheme(colorScheme);
-        }
-    }
 }

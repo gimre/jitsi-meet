@@ -10,6 +10,8 @@ public class JitsiMeetConferenceOptions
 
     private final static String PROP_AUDIO_MUTED = "audioMuted";
 
+    private final static String PROP_COLOR_SCHEME = "colorScheme";
+
     private final static String PROP_SERVER_URL = "serverURL";
 
     private final static String PROP_PICTURE_IN_PICTURE_ENABLED
@@ -46,6 +48,10 @@ public class JitsiMeetConferenceOptions
 
     public Boolean getAudioOnly() {
         return bundle.getBoolean(PROP_AUDIO_ONLY);
+    }
+
+    public Bundle getColorScheme() {
+        return bundle.getBundle(PROP_COLOR_SCHEME);
     }
 
     public String getRoom() {
@@ -86,6 +92,12 @@ public class JitsiMeetConferenceOptions
         return this;
     }
 
+    public JitsiMeetConferenceOptions setColorScheme(Bundle colorScheme) {
+        bundle.putBundle(PROP_COLOR_SCHEME, colorScheme);
+
+        return this;
+    }
+
     public JitsiMeetConferenceOptions setServerURL(String serverURL) {
         return setString(PROP_SERVER_URL, serverURL);
     }
@@ -120,6 +132,8 @@ public class JitsiMeetConferenceOptions
 
     Bundle toProps() {
         Bundle props = new Bundle();
+
+        props.putBundle("colorScheme", getColorScheme());
 
         // serverURL
         if (getServerURL() != null) {

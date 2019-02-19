@@ -45,11 +45,6 @@ public class JitsiMeetView
     private static final String TAG = JitsiMeetView.class.getSimpleName();
 
     /**
-     * A color scheme object to override the default color is the SDK.
-     */
-    private Bundle colorScheme;
-
-    /**
      * The URL of the current conference.
      */
     // XXX Currently, one thread writes and one thread reads, so it should be
@@ -91,15 +86,6 @@ public class JitsiMeetView
                 }
             }
         }
-    }
-
-    /**
-     * Gets the color scheme used in the SDK.
-     *
-     * @return The color scheme map.
-     */
-    public Bundle getColorScheme() {
-        return colorScheme;
     }
 
     /**
@@ -207,15 +193,6 @@ public class JitsiMeetView
         maybeSetViewURL(name, data);
 
         onExternalAPIEvent(LISTENER_METHODS, name, data);
-    }
-
-    /**
-     * Sets the color scheme to override the default colors of the SDK.
-     *
-     * @param colorScheme The color scheme map.
-     */
-    public void setColorScheme(Bundle colorScheme) {
-        this.colorScheme = colorScheme;
     }
 
     /**
