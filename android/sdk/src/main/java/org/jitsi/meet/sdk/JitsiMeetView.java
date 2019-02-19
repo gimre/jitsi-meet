@@ -25,6 +25,7 @@ import android.util.Log;
 import com.facebook.react.bridge.ReadableMap;
 
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -118,12 +119,17 @@ public class JitsiMeetView
                 && (pipOption == null || pipOption);
     }
 
-    public void join(JitsiMeetConferenceOptions options) {
+    public void join(JitsiMeetConferenceOptions options)
+            throws MalformedURLException {
         loadURL(options);
     }
 
     public void leave() {
-        loadURL(new JitsiMeetConferenceOptions(options).setRoom(null));
+        try {
+            loadURL(new JitsiMeetConferenceOptions(options).setRoom(null));
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "Leave failed - invalid URL", e);
+        }
     }
 
     /**
@@ -131,7 +137,8 @@ public class JitsiMeetView
      *
      * @param options FIXME.
      */
-    private void loadURL(@NonNull JitsiMeetConferenceOptions options) {
+    private void loadURL(@NonNull JitsiMeetConferenceOptions options)
+            throws MalformedURLException {
         this.options = Objects.requireNonNull(options, "options");
 
         Bundle props = options.toProps();

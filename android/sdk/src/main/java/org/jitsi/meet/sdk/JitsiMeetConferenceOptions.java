@@ -2,6 +2,7 @@ package org.jitsi.meet.sdk;
 
 import android.os.*;
 
+import java.net.*;
 import java.util.*;
 
 public class JitsiMeetConferenceOptions
@@ -130,7 +131,7 @@ public class JitsiMeetConferenceOptions
         return setBoolean(PROP_WELCOME_PAGE_ENABLED, isWelcomePageEnabled);
     }
 
-    Bundle toProps() {
+    Bundle toProps() throws MalformedURLException {
         Bundle props = new Bundle();
 
         props.putBundle("colorScheme", getColorScheme());
@@ -152,15 +153,14 @@ public class JitsiMeetConferenceOptions
         // FIXME The url bundle thing feels weird
         Bundle urlBundle = new Bundle();
 
-        String url = Objects.requireNonNull(getServerURL(), "serverURL");
+        URL url = new URL(Objects.requireNonNull(getServerURL(), "serverURL"));
         String room = getRoom();
 
         if (room != null) {
-            // FIXME do relativeToURL on server URL
-            url += "/" + room;
+            url = new URL(url, room);
         }
 
-        urlBundle.putString("url", url);
+        urlBundle.putString("url", url.toString());
 
         // FIXME check if null checks are necessary ?
         if (getAudioMuted() != null) {
