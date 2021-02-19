@@ -184,6 +184,25 @@ function _addChatMsgListener(conference, store) {
     );
 
     conference.on(
+        JitsiConferenceEvents.SYSTEM_MESSAGE_RECEIVED,
+        (id, message, timestamp) => {
+            const data = JSON.parse(message)
+            const systemMessage = 'poll' in data
+                ? 'votes_for' in data
+                    ? 'end-poll'
+                    : 'start-poll'
+                : undefined
+
+            _handleReceivedMessage(store, {
+                id,
+                message,
+                systemMessage,
+                timestamp
+            });
+        }
+    );
+
+    conference.on(
         JitsiConferenceEvents.CONFERENCE_ERROR, (errorType, error) => {
             errorType === JitsiConferenceErrors.CHAT_ERROR && _handleChatError(store, error);
         });
@@ -213,7 +232,7 @@ function _handleChatError({ dispatch }, error) {
  * @param {Object} message - The message object.
  * @returns {void}
  */
-function _handleReceivedMessage({ dispatch, getState }, { id, message, privateMessage, timestamp }) {
+function _handleReceivedMessage({ dispatch, getState }, { id, message, privateMessage, systemMessage, timestamp }) {
     // Logic for all platforms:
     const state = getState();
     const { isOpen: isChatOpen } = state['features/chat'];
@@ -226,8 +245,11 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, privateMe
     // backfilled for a participant that has left the conference.
     const participant = getParticipantById(state, id) || {};
     const localParticipant = getLocalParticipant(getState);
-    const displayName = getParticipantDisplayName(state, id);
-    const hasRead = participant.local || isChatOpen;
+    const displayName = systemMessage
+        ? 'System'
+        : getParticipantDisplayName(state, id);
+
+    const hasRead = participant.local || isChatOpen || systemMessage;
     const timestampToDate = timestamp ? new Date(timestamp) : new Date();
     const millisecondsTimestamp = timestampToDate.getTime();
 
@@ -238,6 +260,7 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, privateMe
         messageType: participant.local ? MESSAGE_TYPE_LOCAL : MESSAGE_TYPE_REMOTE,
         message,
         privateMessage,
+        systemMessage,
         recipient: getParticipantDisplayName(state, localParticipant.id),
         timestamp: millisecondsTimestamp
     }));

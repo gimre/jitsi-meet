@@ -37,16 +37,30 @@ class ChatMessage extends AbstractChatMessage<Props> {
             }
         });
 
+        const chatMessageClassName = message.privateMessage
+            ? 'privatemessage'
+            : message.systemMessage
+                ? 'systemmessage'
+                : '';
+
         return (
             <div className = 'chatmessage-wrapper'>
-                <div className = { `chatmessage ${message.privateMessage ? 'privatemessage' : ''}` }>
+                <div className = { `chatmessage ${chatMessageClassName}` }>
                     <div className = 'replywrapper'>
                         <div className = 'messagecontent'>
                             { this.props.showDisplayName && this._renderDisplayName() }
-                            <div className = 'usermessage'>
-                                { processedMessage }
-                            </div>
-                            { message.privateMessage && this._renderPrivateNotice() }
+                            { message.systemMessage
+                                ? this._renderSystemMessage()
+                                : (
+                                    <>
+                                        <div className = 'usermessage'>
+                                            { processedMessage }
+                                        </div>
+                                        { message.privateMessage && this._renderPrivateNotice() }
+                                    </>
+                                )
+                            }
+
                         </div>
                         { message.privateMessage && message.messageType !== MESSAGE_TYPE_LOCAL
                             && (
@@ -94,6 +108,53 @@ class ChatMessage extends AbstractChatMessage<Props> {
                 { this._getPrivateNoticeMessage() }
             </div>
         );
+    }
+
+    _renderSystemMessage() {
+        const data = JSON.parse(this._getMessageText())
+
+        switch (this.props.message.systemMessage) {
+            case 'end-poll': {
+                const {
+                    participants,
+                    poll,
+                    votes_for
+                } = data;
+                const yesPercent = votes_for / participants * 100;
+                return (
+                    <>
+                        <div class="hideable">Poll:&nbsp;<b>{ poll }</b></div>
+                        <div class="systemmessagepoll">
+                            <div class="piechart"
+                                style={{
+                                    background: `conic-gradient(
+                                        #4e79a7 0,
+                                        #4e79a7 ${yesPercent}%,
+                                        #e15759 0,
+                                        #e15759 100%
+                                    )`
+                                }}
+                            />
+                            <div class="breakdown">
+                                <div class="yes">Raised hand ({votes_for})</div>
+                            <div class="no">No action ({participants - votes_for})</div>
+                            </div>
+                        </div>
+                    </>
+                )
+                break;
+            }
+            case 'start-poll': {
+                const { poll } = data
+                return (
+                    <div class="systemmessagestartpoll">
+                        Poll:&nbsp;<b>{ poll }</b>
+                    </div>
+                )
+            }
+            default:
+                return this._getMessageText();
+        }
     }
 
     /**

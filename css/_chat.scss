@@ -311,6 +311,84 @@
     display: flex;
     flex-direction: column;
 
+    &.remote {
+        & > .chatmessage-wrapper:not(:first-child) {
+            .messagecontent {
+                & > .hideable:first-child {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    & .systemmessage.systemmessage {
+        background-color: darkgrey;
+        color: #111;
+
+        & .systemmessagestartpoll {
+            display: flex;
+            align-items: center;
+
+            &:after {
+                content: '';
+                background: conic-gradient(
+                    #4e79a7 0,
+                    #4e79a7 38%,
+                    #f28e2c 0,
+                    #f28e2c 61%,
+                    #e15759 0,
+                    #e15759 77%,
+                    #76b7b2 0,
+                    #76b7b2 87%,
+                    #59a14f 0,
+                    #59a14f 93%,
+                    #edc949 0,
+                    #edc949 100%
+                );
+                border-radius: 50%;
+                display: inline-block;
+                height: 1.5em;
+                margin-left: 5px;
+                width: 1.5em;
+            }
+        }
+
+        & .systemmessagepoll {
+            display: flex;
+            padding: 3px 0;
+
+            & > .piechart {
+                border-radius: 50%;
+                height: 50px;
+                width: 50px;
+            }
+
+            & > .breakdown {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                margin-left: 10px;
+
+                & > * {
+                    align-items: center;
+                    border-left-width: 10px;
+                    border-left-style: solid;
+                    display: flex;
+                    height: 10px;
+                    padding-left: 5px;
+                }
+
+                & > .yes {
+                    border-left-color: rgb(78, 121, 167);
+                }
+
+                & > .no {
+                    border-left-color: rgb(225, 87, 89);
+                }
+            }
+        }
+    }
+
     &.local {
         align-items: flex-end;
 

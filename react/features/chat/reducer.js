@@ -28,6 +28,7 @@ ReducerRegistry.register('features/chat', (state = DEFAULT_STATE, action) => {
             messageType: action.messageType,
             message: action.message,
             privateMessage: action.privateMessage,
+            systemMessage: action.systemMessage,
             recipient: action.recipient,
             timestamp: action.timestamp
         };
